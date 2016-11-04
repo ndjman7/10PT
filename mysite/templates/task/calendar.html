@@ -1,0 +1,26 @@
+{% extends 'common/index.html' %}
+{% block content %}
+  {% for month in year %}
+     <h1>{{ forloop.counter }}</h1>
+    {% for week in month %}
+
+      <table style="width:100% ">
+
+      {% for day in week %}
+        <tr>
+
+          {% for j,i in day %}
+          <td>
+              {% if j != 0 %}
+            {{j}}
+              {% endif %}
+
+          </td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+      </table>
+    {% endfor %}
+
+  {% endfor %}
+{% endblock %}
