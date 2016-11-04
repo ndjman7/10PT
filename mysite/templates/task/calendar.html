@@ -1,5 +1,9 @@
 {% extends 'common/index.html' %}
 {% block content %}
+- 날짜 클릭시 할일 10개 작성 칸으로 넘어 감.
+- 할 일을 마쳤다는 의미로 지우면 간단한 글을 작성할 수 있는 코멘트 창이 나오도록.
+- 일을 다 마치면 메세지와 이메일로 수고했다라는 말 오게 하기.
+- 할일 수정하기.
   {% for month in year %}
      <h1>{{ forloop.counter }}</h1>
     {% for week in month %}

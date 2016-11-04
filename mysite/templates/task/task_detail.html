@@ -1,0 +1,9 @@
+{% extends 'common/index.html' %}
+{% block content %}
+<div>
+{% for task in tasks %}
+  <span>{{ forloop.counter }} : {{ task }}</span>
+{% endfor %}
+</div>
+<a href="{% url 'task:task_edit' %}" class="btn btn-default btn-primary">수정하기</a>
+{% endblock %}
