@@ -8,6 +8,7 @@ from task.forms import TaskModelForm
 from task.models import Task, ToDoList
 
 __all__ = [
+    'to_do_list_new',
     'task_calendar',
     'task_detail',
     'task_edit',
@@ -33,8 +34,8 @@ def task_detail(request):
     try:
         to_do_list = request.user.todolist_set.get(date=datetime.date.today())
     except ToDoList.DoesNotExist:
-        return redirect('task:to_do_list')
-    tasks = ToDoList.task_set.all()
+        return render(request, 'task/task_detail.html', context)
+    tasks = to_do_list.task_set.all()
     context['to_do_list'] = to_do_list
     context['tasks'] = tasks
     return render(request, 'task/task_detail.html', context)
@@ -46,7 +47,7 @@ def task_new(request):
         form = TaskModelForm(request.POST)
         if form.is_valid():
             task = form.save(commit=False)
-            task.user = request.user
+            task.mission = request.user.todolist_set.get(date=datetime.date.today())
             task.save()
             return redirect('task:task_detail')
     else:
@@ -55,8 +56,8 @@ def task_new(request):
 
 
 @login_required()
-def task_edit(request):
-    task = get_object_or_404(Task, date=datetime.date.today())
+def task_edit(request, pk):
+    task = get_object_or_404(Task, pk=pk)
     if request.method == 'POST':
         form = TaskModelForm(data=request.POST, instance=task)
 
