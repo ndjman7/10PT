@@ -17,7 +17,7 @@ class ToDoList(models.Model):
 
 class Task(models.Model):
     mission = models.ForeignKey(ToDoList)
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=50, blank=False)
     description = models.CharField(max_length=200)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
