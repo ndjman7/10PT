@@ -34,6 +34,17 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}SUCCESS:
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}ERROR: {% endif %}
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
   <h2> - 메인 페이지 </h2>
   (명언이나 힘이 되는 문구를 보여준다.)
   (오늘의 할일이 있을 시에는 해야될 일 들을 보여준다.)
