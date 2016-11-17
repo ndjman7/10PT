@@ -1,8 +1,13 @@
 {% extends 'common/index.html' %}
+
 {% block content %}
-<form action="" method="POST">
-  {% csrf_token %}
-  {{ form }}
-  <button type="submit">만들기</button>
+<form action="" method="POST">{% csrf_token %}
+  {% for field in form %}
+  <div class="form-group">
+    {{ field.label_tag }}
+    {{ field }}
+  </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary">만들기</button>
 </form>
 {% endblock %}
