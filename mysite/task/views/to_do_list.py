@@ -1,5 +1,5 @@
 import calendar
-import datetime
+from datetime import date
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
@@ -24,15 +24,44 @@ def to_do_list_new(request):
 
 @login_required()
 def task_calendar(request):
-    c = calendar.Calendar(calendar.SUNDAY).yeardays2calendar(2016, 1)
-    return render(request, 'task/calendar.html', {'year': c})
+    _year = {}
+    one_year = {
+        1: 'January',
+        2: 'February',
+        3: 'March',
+        4: 'April',
+        5: 'May',
+        6: 'June',
+        7: 'July',
+        8: 'August',
+        9: 'September',
+        10: 'October',
+        11: 'November',
+        12: 'December',
+    }
+    year = 2017
+    _calendar = calendar.Calendar(calendar.SUNDAY).yeardays2calendar(year, 1)
+    today = date.today().strftime('%m%d')
+    day = int(today[2:])
+
+    for num, month_wrap in enumerate(_calendar):
+        _year.update({one_year[num + 1]: []})
+        for month in month_wrap:
+            for week in month:
+                _year[one_year[num + 1]].append(week)
+    jan = _year['January']
+    context = {
+        'month': jan,
+        'today': day,
+    }
+    return render(request, 'task/calendar.html', context)
 
 
 @login_required
 def task_detail(request):
     context = {}
     try:
-        to_do_list = request.user.todolist_set.get(date=datetime.date.today())
+        to_do_list = request.user.todolist_set.get(date=date.today())
     except ToDoList.DoesNotExist:
         return render(request, 'task/task_detail.html', context)
     tasks = to_do_list.task_set.all()
@@ -47,7 +76,7 @@ def task_new(request):
         form = TaskModelForm(request.POST)
         if form.is_valid():
             task = form.save(commit=False)
-            task.mission = request.user.todolist_set.get(date=datetime.date.today())
+            task.mission = request.user.todolist_set.get(date=date.today())
             task.save()
             return redirect('task:task_detail')
     else:
