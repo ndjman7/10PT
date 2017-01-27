@@ -25,6 +25,15 @@ def to_do_list_new(request):
 @login_required()
 def task_calendar(request):
     _year = {}
+    DAY = {
+        6: 'Sun',
+        0: 'Mon',
+        1: 'Tue',
+        2: 'Wed',
+        3: 'Thu',
+        4: 'Fri',
+        5: 'Sat',
+    }
     one_year = {
         1: 'January',
         2: 'February',
@@ -53,6 +62,7 @@ def task_calendar(request):
     context = {
         'month': jan,
         'today': day,
+        'DAY': ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
     }
     return render(request, 'task/calendar.html', context)
 
