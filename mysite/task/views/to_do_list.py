@@ -48,10 +48,10 @@ def task_calendar(request):
         11: 'November',
         12: 'December',
     }
-    year = 2017
+    today = date.today().strftime('%Y%m%d')
+    year = int(today[:4])
     _calendar = calendar.Calendar(calendar.SUNDAY).yeardays2calendar(year, 1)
-    today = date.today().strftime('%m%d')
-    day = int(today[2:])
+    day = int(today[6:])
 
     for num, month_wrap in enumerate(_calendar):
         _year.update({one_year[num + 1]: []})
@@ -63,6 +63,7 @@ def task_calendar(request):
         'month': jan,
         'today': day,
         'DAY': ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+        'YEAR': year,
     }
     return render(request, 'task/calendar.html', context)
 
