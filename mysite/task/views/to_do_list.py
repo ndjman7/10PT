@@ -13,6 +13,7 @@ __all__ = [
     'task_detail',
     'task_edit',
     'task_new',
+    'task_check',
 ]
 
 
@@ -110,3 +111,14 @@ def task_edit(request, pk):
         form = TaskModelForm(instance=task)
 
     return render(request, 'task/task_edit.html', {'form': form})
+
+
+@login_required()
+def task_check(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    if request.method == 'POST':
+        task.check = not task.check
+        task.save()
+        return redirect('task:task_detail', id=request.user.username)
+    else:
+        return redirect('task:index')
