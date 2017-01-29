@@ -69,7 +69,7 @@ def task_calendar(request):
 
 
 @login_required
-def task_detail(request):
+def task_detail(request, id):
     context = {}
     try:
         to_do_list = request.user.todolist_set.get(date=date.today())
@@ -89,7 +89,7 @@ def task_new(request):
             task = form.save(commit=False)
             task.mission = request.user.todolist_set.get(date=date.today())
             task.save()
-            return redirect('task:task_detail')
+            return redirect('task:task_detail', id=request.user.username)
     else:
         form = TaskModelForm()
         return render(request, 'task/task_edit.html', {'form': form})
@@ -105,7 +105,7 @@ def task_edit(request, pk):
             task = form.save(commit=False)
             task.user = request.user
             task.save()
-            return redirect('task:task_detail')
+            return redirect('task:task_detail', id=request.user.username)
     else:
         form = TaskModelForm(instance=task)
 

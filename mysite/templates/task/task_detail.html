@@ -15,7 +15,7 @@
 <div>
 {% for task in tasks %}
   <span>{{ forloop.counter }} : {{ task }}</span>
-  <a href="{% url 'task:task_edit' pk=task.pk id=request.user.username %}" class = "btn btn-default btn-primary">수정하기</a>
+  <a href="{% url 'task:task_edit' pk=task.pk %}" class = "btn btn-default btn-primary">수정하기</a>
 {% endfor %}
 </div>
 
