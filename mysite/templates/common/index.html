@@ -23,7 +23,7 @@
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
-          <li><a href="{% url 'task:task_detail' %}">할 일</a></li>
+          <li><a href="{% url 'task:task_detail' id=request.user.username %}">할 일</a></li>
           <li><a href="#">마이 페이지</a></li>
           <li><a href="{% url 'member:logout' %}">로그아웃</a></li>
         {% else %}
