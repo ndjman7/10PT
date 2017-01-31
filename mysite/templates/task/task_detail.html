@@ -12,6 +12,7 @@
   </div>
   {% else %}
   <a href="{% url 'task:task_new' %}" class="btn btn-default btn-primary">추가하기</a>
+  <p>진행상황: {{ finish_tasks }}/{{ all_task }}</p>
   <div>
     {% for task in tasks %}
     <p style="font-size: 15px;">{{ forloop.counter }} : {{ task }}</p>

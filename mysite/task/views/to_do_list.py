@@ -18,9 +18,9 @@ __all__ = [
 
 
 @login_required()
-def to_do_list_new(request):
+def to_do_list_new(request, id):
     request.user.todolist_set.create()
-    return redirect('task:task_detail')
+    return redirect('task:task_detail', id=request.user.username)
 
 
 @login_required()
@@ -79,6 +79,8 @@ def task_detail(request, id):
     tasks = to_do_list.task_set.all()
     context['to_do_list'] = to_do_list
     context['tasks'] = tasks
+    context['all_task'] = tasks.count()
+    context['finish_tasks'] = to_do_list.task_set.filter(check=True).count()
     return render(request, 'task/task_detail.html', context)
 
 
