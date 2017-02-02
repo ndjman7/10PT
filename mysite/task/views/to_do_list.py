@@ -52,19 +52,42 @@ def task_calendar(request):
     today = date.today().strftime('%Y%m%d')
     year = int(today[:4])
     _calendar = calendar.Calendar(calendar.SUNDAY).yeardays2calendar(year, 1)
-    day = int(today[6:])
+    thisday = int(today[6:])
+    thismonth = int(today[4:6])
+    LAST_TO_DO_LISTS = {}
+    for last_date in range(1, thisday):
+        last_to_do_list = ToDoList.objects.filter(date=date(year, thismonth, last_date))
+        if last_to_do_list:
+            LAST_TO_DO_LISTS[last_date] = last_to_do_list[0]
+        else:
+            LAST_TO_DO_LISTS[last_date] = None
 
+    result = []
     for num, month_wrap in enumerate(_calendar):
         _year.update({one_year[num + 1]: []})
         for month in month_wrap:
             for week in month:
-                _year[one_year[num + 1]].append(week)
-    jan = _year['January']
+                _year[one_year[num+1]].append(week)
+
+    for week in _year[one_year[thismonth]]:
+        for day in week:
+            result.append((day[0], day[1], LAST_TO_DO_LISTS.get(day[0], 0)))
+
+    thisresult = []
+    thisresult.append(result[:7])
+    thisresult.append(result[7:14])
+    thisresult.append(result[14:21])
+    thisresult.append(result[21:28])
+    thisresult.append(result[28:])
+
+    jan = _year['February']
     context = {
         'month': jan,
-        'today': day,
+        'today': thisday,
         'DAY': ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
         'YEAR': year,
+        'thismonth': thismonth,
+        'thisresult': thisresult,
     }
     return render(request, 'task/calendar.html', context)
 
