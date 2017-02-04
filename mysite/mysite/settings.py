@@ -38,6 +38,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'member',
     'task',
+    'motivation',
+
     'debug_toolbar',
 
     'django.contrib.admin',

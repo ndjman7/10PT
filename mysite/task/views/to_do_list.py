@@ -100,7 +100,10 @@ def task_detail(request, id):
     except ToDoList.DoesNotExist:
         return render(request, 'task/task_detail.html', context)
     tasks = to_do_list.task_set.all()
-    task_percent = round(to_do_list.task_set.filter(check=True).count()/tasks.count()*100)
+    try:
+        task_percent = round(to_do_list.task_set.filter(check=True).count()/tasks.count()*100)
+    except ZeroDivisionError:
+        task_percent = 0
     print(task_percent)
     context['to_do_list'] = to_do_list
     context['tasks'] = tasks
