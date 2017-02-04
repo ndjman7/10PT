@@ -24,6 +24,7 @@
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
           <li><a href="{% url 'motivation:post' %}">동기부여</a></li>
+          <li><a href="{% url 'task:task_calendar' %}">달력 기능</a></li>
           <li><a href="{% url 'task:task_detail' id=request.user.username %}">할 일</a></li>
           <li><a href="#">마이 페이지</a></li>
           <li><a href="{% url 'member:logout' %}">로그아웃</a></li>
@@ -46,18 +47,9 @@
     {% endfor %}
 </ul>
 {% endif %}
-  <h2> - 메인 페이지 </h2>
-  (명언이나 힘이 되는 문구를 보여준다.)
-  (오늘의 할일이 있을 시에는 해야될 일 들을 보여준다.)
-  <h2>- 할일 페이지</h2>
-  <a href="{% url 'task:task_calendar' %}">달력 기능</a>
-
-
     <h2>- 마이 페이지</h2>
     - 레벨 기능
     - 프로필 사진
-
-    <h2>- 관리자 커스터마이징</h2>
     {% block content %}
     {% endblock %}
 </body>
