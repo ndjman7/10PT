@@ -3,15 +3,18 @@ from datetime import date
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic.detail import DetailView
 
 from task.forms import TaskModelForm
 from task.models import Task, ToDoList
+
 
 __all__ = [
     'task_check',
     'task_edit',
     'task_new',
     'task_calendar',
+    'TaskDetailView',
 ]
 
 
@@ -127,3 +130,9 @@ def task_check(request, pk):
         return redirect('task:to_do_list_detail', id=request.user.username)
     else:
         return redirect('task:index')
+
+
+class TaskDetailView(DetailView):
+
+    model = Task
+    template_name = 'task/task_detail.html'

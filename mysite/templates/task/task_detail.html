@@ -1,0 +1,23 @@
+{% extends 'common/index.html' %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-4">
+
+  </div>
+  <div class="col-md-4">
+    <div>
+      <h1>{{ task.title }}</h1>
+    </div>
+    <div>
+      <p class="lead">{{ task.description }}</p>
+    </div>
+    <a href="{% url 'task:task_edit' pk=task.pk %}" class="btn btn-default btn-primary">수정하기</a>
+    <a href="{% url 'task:to_do_list_detail' id=request.user.username %}" class='btn btn-default btn-primary'>뒤로</a>
+  </div>
+  <div class="col-md-4">
+
+  </div> 
+
+</div>
+{% endblock %}
