@@ -9,7 +9,6 @@ from task.models import Task, ToDoList
 
 __all__ = [
     'task_check',
-    'task_detail',
     'task_edit',
     'task_new',
     'task_calendar',
@@ -85,25 +84,7 @@ def task_calendar(request):
     return render(request, 'task/calendar.html', context)
 
 
-@login_required
-def task_detail(request, id):
-    context = {}
-    try:
-        to_do_list = request.user.todolist_set.get(date=date.today())
-    except ToDoList.DoesNotExist:
-        return render(request, 'task/task_detail.html', context)
-    tasks = to_do_list.task_set.all()
-    try:
-        task_percent = round(to_do_list.task_set.filter(check=True).count()/tasks.count()*100)
-    except ZeroDivisionError:
-        task_percent = 0
-    print(task_percent)
-    context['to_do_list'] = to_do_list
-    context['tasks'] = tasks
-    context['all_task'] = tasks.count()
-    context['finish_tasks'] = to_do_list.task_set.filter(check=True).count()
-    context['task_percent'] = task_percent
-    return render(request, 'task/task_detail.html', context)
+
 
 
 @login_required()
@@ -114,7 +95,7 @@ def task_new(request):
             task = form.save(commit=False)
             task.mission = request.user.todolist_set.get(date=date.today())
             task.save()
-            return redirect('task:task_detail', id=request.user.username)
+            return redirect('task:to_do_list_detail', id=request.user.username)
     else:
         form = TaskModelForm()
         return render(request, 'task/task_edit.html', {'form': form})
@@ -130,7 +111,7 @@ def task_edit(request, pk):
             task = form.save(commit=False)
             task.user = request.user
             task.save()
-            return redirect('task:task_detail', id=request.user.username)
+            return redirect('task:to_do_list_detail', id=request.user.username)
     else:
         form = TaskModelForm(instance=task)
 
@@ -143,6 +124,6 @@ def task_check(request, pk):
     if request.method == 'POST':
         task.check = not task.check
         task.save()
-        return redirect('task:task_detail', id=request.user.username)
+        return redirect('task:to_do_list_detail', id=request.user.username)
     else:
         return redirect('task:index')

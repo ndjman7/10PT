@@ -25,7 +25,7 @@
         {% if user.is_authenticated %}
           <li><a href="{% url 'motivation:post' %}">동기부여</a></li>
           <li><a href="{% url 'task:task_calendar' %}">달력 기능</a></li>
-          <li><a href="{% url 'task:task_detail' id=request.user.username %}">할 일</a></li>
+          <li><a href="{% url 'task:to_do_list_detail' id=request.user.username %}">할 일</a></li>
           <li><a href="#">마이 페이지</a></li>
           <li><a href="{% url 'member:logout' %}">로그아웃</a></li>
         {% else %}
