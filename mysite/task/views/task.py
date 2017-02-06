@@ -94,9 +94,9 @@ def task_new(request):
         form = TaskModelForm(request.POST)
         if form.is_valid():
             task = form.save(commit=False)
-            task.mission = request.user.todolist_set.get(date=datetime.date.today())
+            task.mission = request.user.todolist_set.get(date=datetime.date.today(), user=request.user)
             task.save()
-            return redirect('task:to_do_list_detail', date=datetime.date.today())
+            return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
     else:
         form = TaskModelForm()
         return render(request, 'task/task_edit.html', {'form': form})
@@ -112,7 +112,7 @@ def task_edit(request, pk):
             task = form.save(commit=False)
             task.user = request.user
             task.save()
-            return redirect('task:to_do_list_detail', date=datetime.date.today())
+            return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
     else:
         form = TaskModelForm(instance=task)
 
@@ -125,7 +125,7 @@ def task_check(request, pk):
     if request.method == 'POST':
         task.check = not task.check
         task.save()
-        return redirect('task:to_do_list_detail', date=datetime.date.today())
+        return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
     else:
         return redirect('task:index')
 
@@ -134,3 +134,9 @@ class TaskDetailView(DetailView):
 
     model = Task
     template_name = 'task/task_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(TaskDetailView, self).get_context_data(**kwargs)
+        context['date'] = self.object.mission.date.strftime('%Y%m%d')
+        context['today'] = datetime.date.today().strftime('%Y%m%d')
+        return context

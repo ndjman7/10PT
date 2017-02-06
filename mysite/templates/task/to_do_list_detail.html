@@ -18,7 +18,9 @@
     </div>
   </div>
 
+  {% if date == today %}
   <a href="{% url 'task:task_new' %}" class="btn btn-default btn-primary">추가하기</a>
+  {% endif %}
   <p>진행상황: {{ finish_tasks }}/{{ all_task }}</p>
 
   <div>

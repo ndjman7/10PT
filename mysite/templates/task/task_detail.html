@@ -12,8 +12,10 @@
     <div>
       <p class="lead">{{ task.description }}</p>
     </div>
+    {% if date == today %}
     <a href="{% url 'task:task_edit' pk=task.pk %}" class="btn btn-default btn-primary">수정하기</a>
-    <a href="{% url 'task:to_do_list_detail' date%}" class='btn btn-default btn-primary'>뒤로</a>
+    {% endif %}
+    <a href="{% url 'task:to_do_list_detail' date=date %}" class='btn btn-default btn-primary'>뒤로</a>
   </div>
   <div class="col-md-4">
 
