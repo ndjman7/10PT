@@ -1,5 +1,5 @@
 import calendar
-from datetime import date
+import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
@@ -44,16 +44,16 @@ def task_calendar(request):
         11: 'November',
         12: 'December',
     }
-    today = date.today().strftime('%Y%m%d')
+    today = datetime.date.today().strftime('%Y%m%d')
     year = int(today[:4])
     _calendar = calendar.Calendar(calendar.SUNDAY).yeardays2calendar(year, 1)
     thisday = int(today[6:])
     thismonth = int(today[4:6])
     LAST_TO_DO_LISTS = {}
     for last_date in range(1, thisday):
-        last_to_do_list = ToDoList.objects.filter(date=date(year, thismonth, last_date))
+        last_to_do_list = ToDoList.objects.filter(date=datetime.date(year, thismonth, last_date), user=request.user)
         if last_to_do_list:
-            LAST_TO_DO_LISTS[last_date] = last_to_do_list[0]
+            LAST_TO_DO_LISTS[last_date] = last_to_do_list[0].date.strftime('%Y%m%d')
         else:
             LAST_TO_DO_LISTS[last_date] = None
 
@@ -78,16 +78,14 @@ def task_calendar(request):
     jan = _year['February']
     context = {
         'month': jan,
-        'today': thisday,
+        'thisday': thisday,
         'DAY': ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
         'YEAR': year,
         'thismonth': thismonth,
         'thisresult': thisresult,
+        'today': today,
     }
     return render(request, 'task/calendar.html', context)
-
-
-
 
 
 @login_required()
@@ -96,9 +94,9 @@ def task_new(request):
         form = TaskModelForm(request.POST)
         if form.is_valid():
             task = form.save(commit=False)
-            task.mission = request.user.todolist_set.get(date=date.today())
+            task.mission = request.user.todolist_set.get(date=datetime.date.today())
             task.save()
-            return redirect('task:to_do_list_detail', id=request.user.username)
+            return redirect('task:to_do_list_detail', date=datetime.date.today())
     else:
         form = TaskModelForm()
         return render(request, 'task/task_edit.html', {'form': form})
@@ -114,7 +112,7 @@ def task_edit(request, pk):
             task = form.save(commit=False)
             task.user = request.user
             task.save()
-            return redirect('task:to_do_list_detail', id=request.user.username)
+            return redirect('task:to_do_list_detail', date=datetime.date.today())
     else:
         form = TaskModelForm(instance=task)
 
@@ -127,7 +125,7 @@ def task_check(request, pk):
     if request.method == 'POST':
         task.check = not task.check
         task.save()
-        return redirect('task:to_do_list_detail', id=request.user.username)
+        return redirect('task:to_do_list_detail', date=datetime.date.today())
     else:
         return redirect('task:index')
 

@@ -14,12 +14,14 @@
   <tr>
     {% for date, day, last_to_do_list in week %}
     <td style="text-align: center;">
-      {% if date == today %}
+      {% if date == thisday %}
       <span>
-        <a href="{% url 'task:to_do_list_detail' id=request.user.username %}">{{ date }}</a>
+        <a href="{% url 'task:to_do_list_detail' date=today %}">{{ date }}</a>
       </span>
       {% elif last_to_do_list %}
-      <span style="color: red;">{{ date }}</span>
+      <span style="color: red;">
+        <a href="{% url 'task:to_do_list_detail' date=last_to_do_list %}">{{ date }}</a>
+      </span>
       {% elif date %}
       <span>{{ date }}</span>
       {% endif %}
