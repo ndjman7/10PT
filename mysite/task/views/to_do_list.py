@@ -41,4 +41,6 @@ def to_do_list_detail(request, date):
     context['all_task'] = tasks.count()
     context['finish_tasks'] = to_do_list.task_set.filter(check=True).count()
     context['task_percent'] = task_percent
+    context['date'] = date
+    context['today'] = datetime.date.today().strftime('%Y%m%d')
     return render(request, 'task/to_do_list_detail.html', context)
