@@ -1,9 +1,9 @@
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 
 
 class ToDoList(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
     date = models.DateField(auto_now_add=True)

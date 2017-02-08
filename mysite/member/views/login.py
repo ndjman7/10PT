@@ -11,12 +11,12 @@ __all__ = [
 def login(request):
     if request.method == 'POST':
         try:
-            username = request.POST['username']
+            email = request.POST['email']
             password = request.POST['password']
         except KeyError:
             return redirect('member:login')
         user = authenticate(
-            username=username,
+            email=email,
             password=password
         )
         if user is not None:
