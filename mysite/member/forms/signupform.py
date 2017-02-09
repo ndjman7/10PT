@@ -1,17 +1,24 @@
 from django import forms
 from django.contrib.auth import password_validation
-from member.models import TaskUser
+from django.contrib.auth import get_user_model
+from ..models import UserInfo
+
+__all__ = [
+    'SignUpModelForm',
+]
 
 
 class SignUpModelForm(forms.ModelForm):
+
     password1 = forms.CharField(widget=forms.PasswordInput)
     password2 = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField()
 
     class Meta:
-        model = TaskUser
+        model = get_user_model()
         fields = [
-            'username',
             'email',
+            'username',
             'password1',
             'password2',
         ]
@@ -35,4 +42,5 @@ class SignUpModelForm(forms.ModelForm):
         user = super(SignUpModelForm, self).save(commit=False)
         user.set_password(self.cleaned_data['password1'])
         user.save()
+        UserInfo.objects.create(user=user, username=self.cleaned_data.get('username'))
         return user

@@ -32,7 +32,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'member.TaskUser'
+AUTH_USER_MODEL = 'custom_user.EmailUser'
 
 # Application definition
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'motivation',
 
     'debug_toolbar',
+    'custom_user',
 
     'django.contrib.admin',
     'django.contrib.auth',
