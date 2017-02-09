@@ -8,7 +8,8 @@ __all__ = [
 
 class SignInModelForm(forms.ModelForm):
 
-    password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
     class Meta:
         model = get_user_model()

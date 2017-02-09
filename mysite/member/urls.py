@@ -3,7 +3,7 @@ from member import views
 
 
 urlpatterns = [
-    url('^login/$', views.signin, name='login'),
+    url('^signin/$', views.signin, name='signin'),
     url('^signup/$', views.signup, name='signup'),
-    url('^logout/$', views.signout, name='logout'),
+    url('^signout/$', views.signout, name='signout'),
 ]

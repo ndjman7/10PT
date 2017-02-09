@@ -26,9 +26,9 @@
           <li><a href="{% url 'motivation:post' %}">동기부여</a></li>
           <li><a href="{% url 'task:task_calendar' %}">달력</a></li>
           <li><a href="#">마이 페이지</a></li>
-          <li><a href="{% url 'member:logout' %}">로그아웃</a></li>
+          <li><a href="{% url 'member:signout' %}">로그아웃</a></li>
         {% else %}
-          <li><a href="{% url 'member:login' %}">로그인</a></li>
+          <li><a href="{% url 'member:signin' %}">로그인</a></li>
           <li><a href="{% url 'member:signup' %}">가입하기</a></li>
         {% endif %}
       </ul>
@@ -36,15 +36,15 @@
   </div><!-- /.container-fluid -->
 </nav>
 {% if messages %}
-<ul class="messages">
+<div class="messages text-center">
     {% for message in messages %}
-    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+    <div {% if message.tags %} class="alert-{{ message.tags }}"{% endif %} style="font-size: 30px">
         {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}SUCCESS:
         {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}ERROR: {% endif %}
         {{ message }}
-    </li>
+    </div>
     {% endfor %}
-</ul>
+</div>
 {% endif %}
     {% block content %}
     {% endblock %}

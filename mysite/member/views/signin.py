@@ -26,7 +26,7 @@ def signin(request):
         else:
             messages.error(request, 'Sign In Failed')
             form = SignInModelForm()
-            return render(request, 'member/login.html', {'form': form})
+            return render(request, 'member/signin.html', {'form': form})
     else:
         form = SignInModelForm()
-        return render(request, 'member/login.html', {'form': form})
+        return render(request, 'member/signin.html', {'form': form})
