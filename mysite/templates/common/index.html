@@ -23,9 +23,12 @@
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
+          <li role="presentation"class="disabled"><a href="" style="color: black;">{{ user.info.username }}</a></li>
+          <li role="presentation" class="disabled"><a href="" style="color: black;">LV {{ user.info.level }}</a></li>
+          <li role="presentation" class="disabled"><a href="" style="color: black;">|</a></li>
           <li><a href="{% url 'motivation:post' %}">동기부여</a></li>
           <li><a href="{% url 'task:task_calendar' %}">달력</a></li>
-          <li><a href="#">마이 페이지</a></li>
+          <li><a href="{% url 'member:personal_page' username=request.user.info.username %}">마이 페이지</a></li>
           <li><a href="{% url 'member:signout' %}">로그아웃</a></li>
         {% else %}
           <li><a href="{% url 'member:signin' %}">로그인</a></li>
