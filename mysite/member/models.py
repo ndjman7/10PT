@@ -57,6 +57,7 @@ class UserInfo(models.Model):
     username = models.CharField(max_length=50)
     level = models.IntegerField(default=1)
     exp = models.FloatField(default=float(0))
+    dream = models.TextField(blank=True)
     profile_img = models.ImageField(
         null=True,
         upload_to='profile/',

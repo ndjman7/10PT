@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4" style="left: 30px;">
         <a href="{% url 'member:upload_profile' %}">
         {% if userinfo.profile_img is None %}
         <img src="{{ MEDIA_URL }}profile/default.png" alt="profile" style="width: 300px;height: 300px">
@@ -12,6 +12,7 @@
         {% endif %}
         </a>
         <p style="font-size: 30px;">{{ userinfo.username }}</p>
+        <p style="font-size: 25px;">{{ userinfo.dream }}</p>
     </div>
     <div class="col-md-4"></div>
     <div class="col-md-4"></div>
