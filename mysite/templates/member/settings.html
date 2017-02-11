@@ -1,0 +1,19 @@
+{% extends 'common/index.html' %}
+
+{% block content %}
+{% if request.user.info.profile_img is None %}
+<img src="{{ MEDIA_URL }}profile/default.png" alt="profile" style="width: 300px;height: 300px">
+{% else %}
+<img src="{{ MEDIA_URL }}{{ request.user.info.profile_img }}" alt="profile" style="width: 300px;height: 300px">
+{% endif %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="profile" class="btn btn-default">Upload new profile</label>
+        <input type="file" name="profile_img" id="profile" style="display: none;">
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</form>
+{% endblock %}
