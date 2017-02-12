@@ -18,9 +18,14 @@
     </div>
   </div>
 
+  {% if finish_tasks == all_task %}
+  <p style="font-size: 100px; text-align: center;"> 수고하셨습니다!</p>
+  {% endif %}
+
   {% if date == today %}
   <a href="{% url 'task:task_new' %}" class="btn btn-default btn-primary">추가하기</a>
   {% endif %}
+
   <p>진행상황: {{ finish_tasks }}/{{ all_task }}</p>
 
   <div>
