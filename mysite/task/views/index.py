@@ -1,6 +1,5 @@
 from datetime import date
-from django.shortcuts import render
-
+from django.shortcuts import render, redirect
 
 __all__ = [
     'index',
@@ -8,5 +7,10 @@ __all__ = [
 
 
 def index(request):
-    today = date.today().strftime('%Y%m%d')
-    return render(request, 'common/index.html', {'today': today})
+    try:
+        username = request.user.info.username
+    except:
+        return render(request, 'common/main.html', {})
+    else:
+        return redirect('member:personal_page', username=username)
+
