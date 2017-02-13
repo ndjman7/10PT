@@ -1,6 +1,7 @@
 import calendar
 import datetime
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.detail import DetailView
@@ -90,11 +91,16 @@ def task_calendar(request):
 
 @login_required()
 def task_new(request):
+    today_to_do_list = request.user.todolist_set.get(date=datetime.date.today(), user=request.user)
+    if not today_to_do_list.can_make_task():
+        messages.error(request, 'Task already created')
+        return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
+
     if request.method == "POST":
         form = TaskModelForm(request.POST)
         if form.is_valid():
             task = form.save(commit=False)
-            task.mission = request.user.todolist_set.get(date=datetime.date.today(), user=request.user)
+            task.mission = today_to_do_list
             task.save()
             return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
     else:

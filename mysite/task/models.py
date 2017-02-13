@@ -14,6 +14,12 @@ class ToDoList(models.Model):
     def __str__(self):
         return str(self.date)
 
+    def can_make_task(self):
+        if self.task_set.count() < 10:
+            return True
+        else:
+            return False
+
 
 class Task(models.Model):
     mission = models.ForeignKey(ToDoList)
