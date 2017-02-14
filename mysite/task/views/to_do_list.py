@@ -36,11 +36,14 @@ def to_do_list_detail(request, date):
         task_percent = round(to_do_list.task_set.filter(check=True).count()/tasks.count()*100)
     except ZeroDivisionError:
         task_percent = 0
+    all_task = tasks.count()
+    finish_tasks = to_do_list.task_set.filter(check=True).count()
     context['to_do_list'] = to_do_list
     context['tasks'] = tasks
-    context['all_task'] = tasks.count()
-    context['finish_tasks'] = to_do_list.task_set.filter(check=True).count()
+    context['all_task'] = all_task
+    context['finish_tasks'] = finish_tasks
     context['task_percent'] = task_percent
     context['date'] = date
     context['today'] = datetime.date.today().strftime('%Y%m%d')
+    context['success'] = True if all_task - finish_tasks == 0 and all_task > 0 else False
     return render(request, 'task/to_do_list_detail.html', context)
