@@ -8,82 +8,35 @@ from django.views.generic.detail import DetailView
 
 from task.forms import TaskModelForm
 from task.models import Task, ToDoList
+from task.utils import TaskCalendar
 
 
 __all__ = [
     'task_check',
     'task_edit',
     'task_new',
-    'task_calendar',
+    'to_do_list_calendar',
     'TaskDetailView',
 ]
 
 
 @login_required()
-def task_calendar(request):
-    _year = {}
-    DAY = {
-        6: 'Sun',
-        0: 'Mon',
-        1: 'Tue',
-        2: 'Wed',
-        3: 'Thu',
-        4: 'Fri',
-        5: 'Sat',
-    }
-    one_year = {
-        1: 'January',
-        2: 'February',
-        3: 'March',
-        4: 'April',
-        5: 'May',
-        6: 'June',
-        7: 'July',
-        8: 'August',
-        9: 'September',
-        10: 'October',
-        11: 'November',
-        12: 'December',
-    }
-    today = datetime.date.today().strftime('%Y%m%d')
-    year = int(today[:4])
-    _calendar = calendar.Calendar(calendar.SUNDAY).yeardays2calendar(year, 1)
-    thisday = int(today[6:])
-    thismonth = int(today[4:6])
-    LAST_TO_DO_LISTS = {}
-    for last_date in range(1, thisday):
-        last_to_do_list = ToDoList.objects.filter(date=datetime.date(year, thismonth, last_date), user=request.user)
-        if last_to_do_list:
-            LAST_TO_DO_LISTS[last_date] = last_to_do_list[0].date.strftime('%Y%m%d')
-        else:
-            LAST_TO_DO_LISTS[last_date] = None
+def to_do_list_calendar(request):
 
-    result = []
-    for num, month_wrap in enumerate(_calendar):
-        _year.update({one_year[num + 1]: []})
-        for month in month_wrap:
-            for week in month:
-                _year[one_year[num+1]].append(week)
+    today = TaskCalendar.today
+    this_year = TaskCalendar.this_year
+    this_day = TaskCalendar.this_day
+    this_month = TaskCalendar.this_month
 
-    for week in _year[one_year[thismonth]]:
-        for day in week:
-            result.append((day[0], day[1], LAST_TO_DO_LISTS.get(day[0], 0)))
+    result, _year = TaskCalendar.month_list(ToDoList, request.user)
+    this_month_list = TaskCalendar.pack_one_week(result)
 
-    thisresult = []
-    thisresult.append(result[:7])
-    thisresult.append(result[7:14])
-    thisresult.append(result[14:21])
-    thisresult.append(result[21:28])
-    thisresult.append(result[28:])
-
-    jan = _year['February']
     context = {
-        'month': jan,
-        'thisday': thisday,
-        'DAY': ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
-        'YEAR': year,
-        'thismonth': thismonth,
-        'thisresult': thisresult,
+        'thisday': this_day,
+        'DAY': TaskCalendar.DAY.values(),
+        'YEAR': this_year,
+        'thismonth': this_month,
+        'thisresult': this_month_list,
         'today': today,
     }
     return render(request, 'task/calendar.html', context)
