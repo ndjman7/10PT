@@ -10,10 +10,26 @@ __all__ = [
 
 class SignUpModelForm(forms.ModelForm):
 
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(widget=forms.TextInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Your email address',
+        }))
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Pick a username',
+        }))
+    password1 = forms.CharField(widget=forms.PasswordInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Create a password',
+        }))
+    password2 = forms.CharField(widget=forms.PasswordInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Confirm a password',
+        }))
 
     class Meta:
         model = get_user_model()

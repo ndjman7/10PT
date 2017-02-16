@@ -5,14 +5,8 @@
     <div style="background-color: black;">
         <div style="background-image: url({{ MEDIA_URL }}background/main.jpg); height:750px; width:1169px; background-repeat:no-repeat; margin: 0 auto; display: block; position: relative">
             <form action="{% url 'member:signup' %}" method="POST" >
-                <label for="username"></label>
-                <input type="text" class='form-control' id="username" placeholder="Pick a username" style="float: right;">
-                <label for="email"></label>
-                <input type="text" class='form-control' id="email" placeholder="Your email address" style="float: right;">
-                <label for="password1"></label>
-                <input type="password" class='form-control' id="password1" placeholder="Create a password" style="float: right;">
-                <label for="password2"></label>
-                <input type="password" class='form-control' id="password2" placeholder="Confirm a password" style="float: right;">
+                {% csrf_token %}
+                {{ form }}
                 <button type="submit" class="btn-success btn">Sign Up</button>
             </form>
         </div>

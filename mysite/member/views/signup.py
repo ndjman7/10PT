@@ -13,7 +13,7 @@ def signup(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'ID Created')
-            return redirect('member:login')
+            return redirect('member:signin')
         messages.error(request, 'ID Not Created')
         form = SignUpModelForm()
     else:
