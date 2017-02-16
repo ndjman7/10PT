@@ -4,6 +4,8 @@ import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.decorators import method_decorator
+from django.views import View
 from django.views.generic.detail import DetailView
 
 from task.forms import TaskModelForm
@@ -17,6 +19,7 @@ __all__ = [
     'task_new',
     'to_do_list_calendar',
     'TaskDetailView',
+    'TaskDelete',
 ]
 
 
@@ -89,6 +92,7 @@ def task_check(request, pk):
         return redirect('task:index')
 
 
+@method_decorator(login_required, name='dispatch')
 class TaskDetailView(DetailView):
 
     model = Task
@@ -99,3 +103,20 @@ class TaskDetailView(DetailView):
         context['date'] = self.object.mission.date.strftime('%Y%m%d')
         context['today'] = datetime.date.today().strftime('%Y%m%d')
         return context
+
+
+@method_decorator(login_required, name='dispatch')
+class TaskDelete(View):
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        task = get_object_or_404(Task, pk=kwargs['pk'])
+        if task.mission.user == user:
+            task.delete()
+            messages.success(request, '{} delete'.format(task))
+        else:
+            messages.error(request, 'No access rights')
+
+        return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
+
+

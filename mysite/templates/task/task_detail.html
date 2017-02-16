@@ -13,9 +13,13 @@
       <p class="lead">{{ task.description }}</p>
     </div>
     {% if date == today %}
-    <a href="{% url 'task:task_edit' pk=task.pk %}" class="btn btn-default btn-primary">수정하기</a>
+    <a href="{% url 'task:task_edit' pk=task.pk %}" class="btn btn-default btn-primary">Edit</a>
+    <form action="{% url 'task:task_delete' pk=task.pk %}" method="POST" style="display: inline-block;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-default btn-danger">Delete</button>
+    </form>
     {% endif %}
-    <a href="{% url 'task:to_do_list_detail' date=date %}" class='btn btn-default btn-primary'>뒤로</a>
+    <a href="{% url 'task:to_do_list_detail' date=date %}" class='btn btn-default btn-primary'>Back</a>
   </div>
   <div class="col-md-4">
 

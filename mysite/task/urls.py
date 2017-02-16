@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^task/edit/(?P<pk>[0-9]+)/$', views.task_edit, name='task_edit'),
     url(r'^task/check/(?P<pk>[0-9]+)/$', views.task_check, name='task_check'),
     url(r'^task/detail/(?P<pk>[0-9]+)/$', views.TaskDetailView.as_view(), name='task_detail'),
+    url(r'^task/delete/(?P<pk>[0-9]+)/$', views.TaskDelete.as_view(), name='task_delete'),
 ]
