@@ -140,3 +140,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
+
+# DEBUG_Toolbar
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
