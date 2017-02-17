@@ -47,7 +47,7 @@ def to_do_list_calendar(request):
 
 @login_required()
 def task_new(request):
-    today_to_do_list = request.user.todolist_set.get(date=datetime.date.today(), user=request.user)
+    today_to_do_list = ToDoList.today_list(user=request.user)
     if not today_to_do_list.can_make_task():
         messages.error(request, 'Task already created')
         return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
@@ -57,6 +57,7 @@ def task_new(request):
         if form.is_valid():
             task = form.save(commit=False)
             task.mission = today_to_do_list
+            task.ranking = task.mission.ranking
             task.save()
             return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
     else:

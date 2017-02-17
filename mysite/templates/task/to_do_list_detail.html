@@ -30,7 +30,7 @@
 
   <div>
     {% for task in tasks %}
-    <p style="font-size: 15px;">{{ forloop.counter }} : {{ task.title }}</p>
+    <p style="font-size: 15px;">{{ task.ranking }} : {{ task.title }}</p>
     {% if date == today %}
     <form action="{% url 'task:task_check' pk=task.pk %}" method="POST" style="display: inline-block;">
       {% csrf_token %}
