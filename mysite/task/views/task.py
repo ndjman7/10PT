@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic.detail import DetailView
 
-from task.forms import TaskModelForm
+from task.forms import TaskModelForm, TaskEditModelForm
 from task.models import Task, ToDoList
 from task.utils import TaskCalendar
 
@@ -69,15 +69,13 @@ def task_new(request):
 def task_edit(request, pk):
     task = get_object_or_404(Task, pk=pk)
     if request.method == 'POST':
-        form = TaskModelForm(data=request.POST, instance=task)
+        form = TaskEditModelForm(data=request.POST, instance=task)
 
         if form.is_valid():
-            task = form.save(commit=False)
-            task.user = request.user
-            task.save()
+            form.save()
             return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
     else:
-        form = TaskModelForm(instance=task)
+        form = TaskEditModelForm(instance=task)
 
     return render(request, 'task/task_edit.html', {'form': form})
 
