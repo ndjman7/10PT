@@ -110,6 +110,10 @@ class TaskDelete(View):
         user = request.user
         task = get_object_or_404(Task, pk=kwargs['pk'])
         if task.mission.user == user:
+            change_tasks = task.mission.task_set.filter(ranking__gt=task.ranking)
+            for change_task in change_tasks:
+                change_task.ranking -= 1
+                change_task.save()
             task.delete()
             messages.success(request, '{} delete'.format(task))
         else:
