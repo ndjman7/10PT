@@ -42,3 +42,20 @@ class Task(models.Model):
 
     def __str__(self):
         return str(self.title)
+
+    def sort_ranking(self, origin_ranking):
+
+        to_do_list = self.mission
+        if self.ranking == origin_ranking:
+            return
+
+        if self.ranking < origin_ranking:
+            change_tasks = to_do_list.task_set.filter(ranking__gte=self.ranking).filter(ranking__lt=origin_ranking)
+            for change_task in change_tasks:
+                change_task.ranking += 1
+                change_task.save()
+        else:
+            change_tasks = to_do_list.task_set.filter(ranking__lte=self.ranking).filter(ranking__gt=origin_ranking)
+            for change_task in change_tasks:
+                change_task.ranking -= 1
+                change_task.save()

@@ -30,7 +30,6 @@ def to_do_list_calendar(request):
     this_year = TaskCalendar.this_year
     this_day = TaskCalendar.this_day
     this_month = TaskCalendar.this_month
-
     result, _year = TaskCalendar.month_list(ToDoList, request.user)
     this_month_list = TaskCalendar.pack_one_week(result)
 

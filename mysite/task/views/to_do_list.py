@@ -31,7 +31,7 @@ def to_do_list_detail(request, date):
         to_do_list = request.user.todolist_set.get(date=find_date, user=request.user)
     except ToDoList.DoesNotExist:
         return render(request, 'task/to_do_list_detail.html', context)
-    tasks = to_do_list.task_set.all()
+    tasks = to_do_list.task_set.order_by('ranking')
     try:
         task_percent = round(to_do_list.task_set.filter(check=True).count()/tasks.count()*100)
     except ZeroDivisionError:
