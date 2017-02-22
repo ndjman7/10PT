@@ -39,9 +39,9 @@ AUTH_USER_MODEL = 'custom_user.EmailUser'
 # Application definition
 
 INSTALLED_APPS = [
-    'member',
-    'task',
-    'motivation',
+    'member.apps.MemberConfig',
+    'task.apps.TaskConfig',
+    'motivation.apps.MotivationConfig',
 
     'debug_toolbar',
     'custom_user',
