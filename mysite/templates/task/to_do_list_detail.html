@@ -32,8 +32,9 @@
     {% for task in tasks %}
     <p style="font-size: 15px;">{{ task.ranking }} : {{ task.title }}</p>
     {% if date == today %}
-    <form action="{% url 'task:task_check' pk=task.pk %}" method="POST" style="display: inline-block;">
+    <form action="{% url 'task:task_check' %}" method="POST" style="display: inline-block;">
       {% csrf_token %}
+      <input type="hidden" name="task_pk" value="{{ task.pk }}">
       {% if task.check %}
       <button type="submit" class="btn btn-default btn-primary">취소</button>
       {% else %}

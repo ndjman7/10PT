@@ -13,7 +13,7 @@ from task.utils import TaskCalendar
 
 
 __all__ = [
-    'task_check',
+    'TaskCheck',
     'task_edit',
     'TaskNew',
     'to_do_list_calendar',
@@ -85,15 +85,17 @@ def task_edit(request, pk):
     return render(request, 'task/task_edit.html', {'form': form})
 
 
-@login_required()
-def task_check(request, pk):
-    task = get_object_or_404(Task, pk=pk)
-    if request.method == 'POST':
+@method_decorator(login_required, name='dispatch')
+class TaskCheck(View):
+
+    def get(self, request, *args, **kwargs):
+        return redirect('task:index')
+
+    def post(self, request, *args, **kwargs):
+        task = get_object_or_404(Task, pk=request.POST['task_pk'])
         task.check = not task.check
         task.save()
         return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
-    else:
-        return redirect('task:index')
 
 
 @method_decorator(login_required, name='dispatch')
