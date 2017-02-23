@@ -1,4 +1,3 @@
-import calendar
 import datetime
 
 from django.contrib import messages
@@ -16,7 +15,7 @@ from task.utils import TaskCalendar
 __all__ = [
     'task_check',
     'task_edit',
-    'task_new',
+    'TaskNew',
     'to_do_list_calendar',
     'TaskDetailView',
     'TaskDelete',
@@ -44,14 +43,24 @@ def to_do_list_calendar(request):
     return render(request, 'task/calendar.html', context)
 
 
-@login_required()
-def task_new(request):
-    today_to_do_list = ToDoList.today_list(user=request.user)
-    if not today_to_do_list.can_make_task():
-        messages.error(request, 'Task already created')
-        return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
+@method_decorator(login_required, name='dispatch')
+class TaskNew(View):
 
-    if request.method == "POST":
+    def get(self, request, *args, **kwargs):
+        today_to_do_list = ToDoList.today_list(user=request.user)
+        if not today_to_do_list.can_make_task():
+            messages.error(request, 'Task already created')
+            return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
+
+        form = TaskModelForm()
+        return render(request, 'task/task_edit.html', {'form': form})
+
+    def post(self, request,  *args, **kwargs):
+        today_to_do_list = ToDoList.today_list(user=request.user)
+        if not today_to_do_list.can_make_task():
+            messages.error(request, 'Task already created')
+            return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
+
         form = TaskModelForm(request.POST)
         if form.is_valid():
             task = form.save(commit=False)
@@ -59,9 +68,6 @@ def task_new(request):
             task.ranking = task.mission.ranking
             task.save()
             return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
-    else:
-        form = TaskModelForm()
-        return render(request, 'task/task_edit.html', {'form': form})
 
 
 @login_required()
