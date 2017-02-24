@@ -95,6 +95,7 @@ class TaskCheck(View):
         task = get_object_or_404(Task, pk=request.POST['task_pk'])
         task.check = not task.check
         task.save()
+        task.mission.set_progress()
         return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
 
 
