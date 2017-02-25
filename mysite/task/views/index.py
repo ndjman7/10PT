@@ -1,4 +1,3 @@
-from datetime import date
 from django.shortcuts import render, redirect
 
 from member.forms import SignUpModelForm

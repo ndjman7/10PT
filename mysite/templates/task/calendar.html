@@ -12,8 +12,8 @@
   </tr>
   {% for week in thisresult %}
   <tr>
-    {% for date, day, last_to_do_list in week %}
-    <td style="text-align: center;">
+    {% for date, day, last_to_do_list, progress in week %}
+    <td style="text-align: center; background-color:{{ progress }};">
       {% if date == thisday %}
       <span>
         <a href="{% url 'task:to_do_list_detail' date=today %}">{{ date }}</a>

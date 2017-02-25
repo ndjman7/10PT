@@ -1,6 +1,8 @@
 import calendar
 import datetime
 
+from django.utils import timezone
+
 DAY = {
     0: 'Sun',
     1: 'Mon',
@@ -30,8 +32,7 @@ YEAR = {
 def date_to_str():
     pass
 
-
-today = datetime.date.today().strftime('%Y%m%d')
+today = timezone.now().strftime('%Y%m%d')
 this_year = int(today[:4])
 this_month = int(today[4:6])
 this_day = int(today[6:])

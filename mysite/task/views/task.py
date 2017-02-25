@@ -1,5 +1,3 @@
-import datetime
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
@@ -50,7 +48,7 @@ class TaskNew(View):
         today_to_do_list = ToDoList.today_list(user=request.user)
         if not today_to_do_list.can_make_task():
             messages.error(request, 'Task already created')
-            return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
+            return redirect('task:to_do_list_detail', date=TaskCalendar.today)
 
         form = TaskModelForm()
         return render(request, 'task/task_edit.html', {'form': form})
@@ -59,7 +57,7 @@ class TaskNew(View):
         today_to_do_list = ToDoList.today_list(user=request.user)
         if not today_to_do_list.can_make_task():
             messages.error(request, 'Task already created')
-            return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
+            return redirect('task:to_do_list_detail', date=TaskCalendar.today)
 
         form = TaskModelForm(request.POST)
         if form.is_valid():
@@ -67,7 +65,7 @@ class TaskNew(View):
             task.mission = today_to_do_list
             task.ranking = task.mission.ranking
             task.save()
-            return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
+            return redirect('task:to_do_list_detail', date=TaskCalendar.today)
 
 
 @login_required()
@@ -78,7 +76,7 @@ def task_edit(request, pk):
 
         if form.is_valid():
             form.save()
-            return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
+            return redirect('task:to_do_list_detail', date=TaskCalendar.today)
     else:
         form = TaskEditModelForm(instance=task)
 
@@ -96,7 +94,7 @@ class TaskCheck(View):
         task.check = not task.check
         task.save()
         task.mission.set_progress()
-        return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
+        return redirect('task:to_do_list_detail', date=TaskCalendar.today)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -108,7 +106,7 @@ class TaskDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(TaskDetailView, self).get_context_data(**kwargs)
         context['date'] = self.object.mission.date.strftime('%Y%m%d')
-        context['today'] = datetime.date.today().strftime('%Y%m%d')
+        context['today'] = TaskCalendar.today
         return context
 
 
@@ -128,6 +126,6 @@ class TaskDelete(View):
         else:
             messages.error(request, 'No access rights')
 
-        return redirect('task:to_do_list_detail', date=datetime.date.today().strftime('%Y%m%d'))
+        return redirect('task:to_do_list_detail', date=TaskCalendar.today)
 
 

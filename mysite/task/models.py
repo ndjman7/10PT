@@ -1,7 +1,6 @@
-import datetime
-
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 
 class ToDoList(models.Model):
@@ -53,7 +52,7 @@ class ToDoList(models.Model):
 
     @classmethod
     def today_list(cls, user):
-        return cls.objects.get(user=user, date=datetime.date.today())
+        return cls.objects.get(user=user, date=timezone.now())
 
 
 class Task(models.Model):
