@@ -32,7 +32,9 @@ SECRET_KEY = 'iax+2x*_b4v&quozges%)x$66!mff5jym--_*p%l08#nq6k5@_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '*',
+]
 
 AUTH_USER_MODEL = 'custom_user.EmailUser'
 
