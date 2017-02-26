@@ -1,0 +1,19 @@
+#maincontainer {
+  width: 1200px;
+  margin: 0 auto;
+  height: 600px;
+}
+
+#section {
+  width: 800px;
+  box-sizing: border-box;
+  float: left;
+}
+
+#aside {
+  width: 400px;
+  border: solid 1px black;
+  box-sizing: border-box;
+  float: right;
+  height: 600px;
+}
