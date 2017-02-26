@@ -2,14 +2,17 @@
 
 {% block content %}
 <div class="row">
-    <div style="background-color: black;">
-        <div style="background-image: url({{ MEDIA_URL }}background/main.jpg); height:750px; width:1169px; background-repeat:no-repeat; margin: 0 auto; display: block; position: relative">
-            <form action="{% url 'member:signup' %}" method="POST" >
+    <hr style="border-top: 0px;">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div>
+            <form action="{% url 'member:signin' %}" method="POST" >
                 {% csrf_token %}
                 {{ form }}
                 <button type="submit" class="btn-success btn">Sign Up</button>
             </form>
         </div>
     </div>
+    <div class="col-md-4"></div>
 </div>
 {% endblock%}

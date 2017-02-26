@@ -1,6 +1,7 @@
 {% extends 'common/index.html' %}
+
 {% block content %}
-<div style="width:50%; margin: 0 auto;">
+<div style="width:80%; margin: 0 auto;">
   <h1 style="text-align: center;">Today To Do List!</h1>
   <span style="font-size: 20px;">{{ to_do_list }}</span>
   {% if to_do_list is None %}
@@ -17,11 +18,9 @@
       {{ task_percent }}% Complete
     </div>
   </div>
-
   {% if success %}
-  <p style="font-size: 100px; text-align: center;"> 수고하셨습니다!</p>
+  <p style="font-size: 50px; text-align: center;"> 수고하셨습니다!</p>
   {% endif %}
-
   {% if date == today %}
   <a href="{% url 'task:task_new' %}" class="btn btn-default btn-primary">추가하기</a>
   {% endif %}
@@ -45,6 +44,6 @@
     <a href="{% url 'task:task_detail' pk=task.pk %}" class = "btn btn-default btn-primary">상세보기</a>
     {% endfor %}
   </div>
+  {% endif %}
 </div>
-{% endif %}
 {% endblock %}

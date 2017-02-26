@@ -3,18 +3,20 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-4" style="left: 30px;">
+    <hr style="border-top: 0px">
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
         <a href="{% url 'member:upload_profile' %}">
         {% if userinfo.profile_img is None %}
-        <img src="{{ MEDIA_URL }}profile/default.png" alt="profile" style="width: 300px;height: 300px">
+        <img src="{{ MEDIA_URL }}profile/default.png" alt="profile" style="width: 230px;height: 230px; border-radius: 6px;">
         {% else %}
-        <img src="{{ MEDIA_URL }}{{ userinfo.profile_img }}" alt="profile" style="width: 300px;height: 300px">
+        <img src="{{ MEDIA_URL }}{{ userinfo.profile_img }}" alt="profile" style="width: 230px;height: 230px; border-radius: 6px;">
         {% endif %}
         </a>
         <p style="font-size: 30px;">{{ userinfo.username }}</p>
         <p style="font-size: 25px;">{{ userinfo.dream }}</p>
     </div>
-    <div class="col-md-4"></div>
-    <div class="col-md-4"></div>
+    <div class="col-md-6"></div>
+    <div class="col-md-1"></div>
 </div>
 {% endblock %}
