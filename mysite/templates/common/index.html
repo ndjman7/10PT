@@ -9,35 +9,72 @@
 
   <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-theme.min.css' %}">
+    <link rel="stylesheet" href="{% static 'custom/css/normarize.css' %}">
+    <link rel="stylesheet" href="{% static 'custom/css/header.min.css' %}">
 
 </head>
 <body>
-  <nav class="navbar navbar-default" style="margin-bottom: 0px">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <a class="navbar-brand" href="{% url 'task:index' %}">10PT</a>
+  <div id='header'>
+    <div class="header-container">
+      <div class="header-content">
+        <div class="header-left">
+          <div class='header-logo-container'>
+              <a href="#" class="header-logo-a">
+                <div class='header-logo'></div>
+              </a>
+            </h1>
+          </div>
+          {% if user.is_authenticated %}
+          <div class='home-container'>
+            <a href="{% url 'member:personal_page' username=request.user.info.username %}">
+              <span>HOME</span>
+            </a>
+          </div>
+          <div class='scedule-container'>
+            <a href="{% url 'task:task_calendar' %}">
+              <span>CALENDAR</span>
+            </a>
+          </div>
+          <div class='diary-container'>
+            <a href="#">
+              <span>DIARY</span>
+            </a>
+          </div>
+          {% endif %}
+        </div>
+        <div class="header-right">
+          {% if user.is_authenticated %}
+          <div class="user-profile-container">
+            <div class="user-profile">
+                {% if user.info.profile_img is None %}
+                <img class="user-img" src="{{ MEDIA_URL }}profile/default.png" alt="profile">
+                {% else %}
+                <img class="user-img" src="{{ MEDIA_URL }}{{ userinfo.profile_img }}" alt="profile">
+                {% endif %}
+              <span>{{ user.info.username }}</span>
+            </div>
+          </div>
+          <div class='scedule-container'>
+            <a href="{% url 'member:signout' %}">
+              <span>로그아웃</span>
+            </a>
+          </div>
+          {% else %}
+          <div class='scedule-container'>
+            <a href="{% url 'member:signin' %}">
+              <span>로그인</span>
+            </a>
+          </div>
+          <div class='scedule-container'>
+            <a href="{% url 'member:signup' %}">
+              <span>가입하기</span>
+            </a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
     </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse">
-      <ul class="nav navbar-nav navbar-right">
-        {% if user.is_authenticated %}
-          <li role="presentation"class="disabled"><a href="" style="color: black;">{{ user.info.username }}</a></li>
-          <li role="presentation" class="disabled"><a href="" style="color: black;">LV {{ user.info.level }}</a></li>
-          <li role="presentation" class="disabled"><a href="" style="color: black;">|</a></li>
-          <li><a href="{% url 'motivation:post' %}">동기부여</a></li>
-          <li><a href="{% url 'task:task_calendar' %}">달력</a></li>
-          <li><a href="{% url 'member:personal_page' username=request.user.info.username %}">마이 페이지</a></li>
-          <li><a href="{% url 'member:signout' %}">로그아웃</a></li>
-        {% else %}
-          <li><a href="{% url 'member:signin' %}">로그인</a></li>
-          <li><a href="{% url 'member:signup' %}">가입하기</a></li>
-        {% endif %}
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+  </div>
 {% if messages %}
 <div class="messages text-center">
     {% for message in messages %}
