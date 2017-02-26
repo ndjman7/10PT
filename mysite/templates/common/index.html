@@ -49,6 +49,10 @@
     {% endfor %}
 </div>
 {% endif %}
+<div style="height: 50px; text-align: center;">
+    <p>{{ post.text }}</p>
+    <p>- {{ post.author }} -<p>
+</div>
     {% block content %}
     {% endblock %}
 </body>
