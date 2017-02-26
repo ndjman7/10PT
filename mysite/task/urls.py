@@ -12,4 +12,6 @@ urlpatterns = [
     url(r'^task/check$', views.TaskCheck.as_view(), name='task_check'),
     url(r'^task/detail/(?P<pk>[0-9]+)/$', views.TaskDetailView.as_view(), name='task_detail'),
     url(r'^task/delete/(?P<pk>[0-9]+)/$', views.TaskDelete.as_view(), name='task_delete'),
+
+    url(r'^goal$', views.GoalList.as_view(), name='goal_list'),
 ]

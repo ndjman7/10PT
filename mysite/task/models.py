@@ -90,7 +90,7 @@ class Goal(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     title = models.CharField(max_length=50)
-    description = models.CharField(max_length=200)
+    description = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 

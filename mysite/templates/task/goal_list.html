@@ -1,0 +1,7 @@
+{% extends 'common/index.html' %}
+
+{% block content %}
+{% for goal in object_list %}
+    <div> {{ goal }} </div>
+{% endfor %}
+{% endblock %}
