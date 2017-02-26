@@ -2,6 +2,7 @@ import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+from django.utils import timezone
 
 from task.models import ToDoList
 from task.utils import TaskCalendar
@@ -42,6 +43,6 @@ def to_do_list_detail(request, date):
     context['finish_tasks'] = finish_tasks
     context['task_percent'] = task_percent
     context['date'] = date
-    context['today'] = TaskCalendar.today
+    context['today'] = timezone.now().strftime('%Y%m%d')
     context['success'] = True if all_task - finish_tasks == 0 and all_task > 0 else False
     return render(request, 'task/to_do_list_detail.html', context)
