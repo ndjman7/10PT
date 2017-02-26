@@ -1,0 +1,33 @@
+#header { width: 100%; height: 42px; background-color: #009245; position: relative; }
+
+#header .header-container { width: 100%; padding-right: 200px; box-sizing: border-box; display: flex; }
+
+#header .header-container .header-content { width: 1012px; display: block; margin: auto; padding: 0; display: flex; box-sizing: border-box; height: 42px; position: relative; }
+
+.header-left { flex: 1 1 auto; justify-content: flex-start; height: 42px; }
+
+.header-left .header-logo-a .header-logo { background-image: url(/static/custom/img/header_logo.png); background-repeat: no-repeat; height: 35px; width: 35px; outline: none; overflow: hidden; white-space: nowrap; background-size: 35px 30px; background-position: 0 0px; position: absolute; margin-top: 6px; }
+
+.header-logo-container { display: block; height: 42px; width: 31px; float: left; }
+
+.home-container { float: left; display: block; padding-left: 40px; height: 42px; }
+
+.home-container span { color: white; font-size: 15px; line-height: 45px; display: inline-block; height: 27px; vertical-align: top; font-weight: bold; }
+
+.scedule-container { float: left; display: block; padding-left: 20px; height: 42px; }
+
+.scedule-container span { color: white; font-size: 15px; line-height: 45px; display: inline-block; height: 27px; vertical-align: top; font-weight: bold; }
+
+.diary-container { float: left; display: block; padding-left: 20px; height: 42px; }
+
+.diary-container span { color: white; font-size: 15px; line-height: 45px; display: inline-block; height: 27px; vertical-align: top; font-weight: bold; }
+
+.header-right { display: flex; flex: 0 0 auto; justify-content: flex-end; height: 42px; }
+
+.user-profile-container { display: inline-block; vertical-align: top; padding: 0 9px; }
+
+.user-profile { margin: 7px 0 8px 0; }
+
+.user-profile span { color: white; font-size: 12px; line-height: 29px; display: inline-block; height: 27px; vertical-align: top; font-weight: bold; }
+
+.user-img { border-radius: 2px; display: inline; margin: 2px 6px 2px -8px; vertical-align: inherit; height: 24px; width: 24px; border: 0; }
