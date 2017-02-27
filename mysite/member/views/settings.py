@@ -19,7 +19,7 @@ class UploadProfile(View):
         user_info.profile_img = profile_img
         user_info.save()
 
-        return redirect('member:personal_page', username=request.user.info.username)
+        return redirect('member:personal_page')
 
 
 class UploadProfileContent(View):
@@ -30,4 +30,4 @@ class UploadProfileContent(View):
         user_info.dream = dream
         user_info.save()
 
-        return redirect('member:personal_page', username=request.user.info.username)
+        return redirect('member:personal_page')
