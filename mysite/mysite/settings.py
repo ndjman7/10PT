@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'member.apps.MemberConfig',
     'task.apps.TaskConfig',
     'motivation.apps.MotivationConfig',
+    'diary.apps.DiaryConfig',
 
     'debug_toolbar',
     'custom_user',
