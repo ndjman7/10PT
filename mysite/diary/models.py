@@ -10,6 +10,9 @@ class FutureDiary(models.Model):
     class Meta:
         unique_together = (('user', 'date'),)
 
+    def __str__(self):
+        return "{} {}'s FutureDiary".format(self.date, self.user)
+
 
 class RealDiary(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
@@ -18,3 +21,6 @@ class RealDiary(models.Model):
 
     class Meta:
         unique_together = (('user', 'date'),)
+
+    def __str__(self):
+        return "{} {}'s RealDiary".format(self.date, self.user)
