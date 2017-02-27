@@ -9,14 +9,14 @@ __all__= [
 ]
 
 
-def personal_page(request, username):
+def personal_page(request):
 
     context = {}
     try:
-        user_info = UserInfo.objects.get(username=username)
+        user_info = UserInfo.objects.get(username=request.user.info.username)
+
     except UserInfo.DoesNotExist:
         return redirect('task:index')
-    context['userinfo'] = user_info
 
     return render(request, 'member/user_detail.html', context)
 

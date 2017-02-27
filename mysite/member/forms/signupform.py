@@ -10,6 +10,10 @@ __all__ = [
 
 class SignUpModelForm(forms.ModelForm):
 
+    error_messages = {
+        'password_mismatch': "The two password fields didn't match.",
+    }
+
     email = forms.EmailField(widget=forms.TextInput(
         attrs={
             'class': 'form-control',

@@ -8,10 +8,12 @@ __all__ = [
 
 
 def index(request):
-    try:
-        username = request.user.info.username
-    except:
-        return render(request, 'common/main.html', {'form': SignInModelForm()})
+
+    user = request.user
+
+    if user.id is not None:
+        return redirect('member:personal_page')
     else:
-        return redirect('member:personal_page', username=username)
+        return render(request, 'common/main.html', {'form': SignInModelForm()})
+
 
