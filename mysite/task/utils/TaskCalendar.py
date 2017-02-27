@@ -32,7 +32,7 @@ YEAR = {
 def date_to_str():
     pass
 
-today = timezone.now().strftime('%Y%m%d')
+today = timezone.localtime(timezone.now()).strftime('%Y%m%d')
 this_year = int(today[:4])
 this_month = int(today[4:6])
 this_day = int(today[6:])
