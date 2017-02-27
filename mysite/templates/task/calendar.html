@@ -4,7 +4,18 @@
 <div id="maincontainer">
   <section id="section">
     <article id="calendar">
-      <h1 style="text-align: center; height: 100px;">Calendar</h1>
+
+      <hr style="border-top: 0px;">
+
+      <div class="progress" style="margin:0 40px;">
+        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+          aria-valuemin="0" aria-valuemax="100" style="width:{{ task_percent }}%">
+          {{ task_percent }}% Complete
+        </div>
+      </div>
+
+      <hr style="border-top: 0px;">
+
       <table style="width:80%; margin: 0 auto;"  class="table table-bordered">
         <tr>
           <th colspan="7" style="text-align: center;">{{ YEAR }}년</th>
@@ -20,11 +31,11 @@
           <td style="text-align: center; background-color:{{ progress }};">
             {% if date == thisday %}
             <span>
-              <a href="{% url 'task:task_calendar_detail' date=today %}">{{ date }}</a>
+              <a href="{% url 'task:task_calendar' date=today %}">{{ date }}</a>
             </span>
             {% elif last_to_do_list %}
             <span style="color: red;">
-              <a href="{% url 'task:task_calendar_detail' date=last_to_do_list %}">{{ date }}</a>
+              <a href="{% url 'task:task_calendar' date=last_to_do_list %}">{{ date }}</a>
             </span>
             {% elif date %}
             <span>{{ date }}</span>
@@ -35,13 +46,19 @@
       {% endfor %}
       </table>
     </article>
+
+    <article id="diary">
+      <div>
+        <p>Future Diary</p>
+      </div>
+    </article>
+
   </section>
 
   <aside id='aside'>
     <div id="today-goal">
       <div style="width:80%; margin: 0 auto;">
-      <h1 style="text-align: center;">Today To Do List!</h1>
-      <span style="font-size: 20px;">{{ to_do_list }}</span>
+      <p style="text-align: center; font-size: 20px;">Today's List</p>
       {% if to_do_list is None %}
       <div style="margin: 0 auto;">
         <form action="{% url 'task:to_do_list_new'%}" method="POST">
@@ -50,12 +67,7 @@
         </form>
       </div>
       {% else %}
-      <div class="progress">
-        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
-          aria-valuemin="0" aria-valuemax="100" style="width:{{ task_percent }}%">
-          {{ task_percent }}% Complete
-        </div>
-      </div>
+
       {% if success %}
       <p style="font-size: 50px; text-align: center;"> 수고하셨습니다!</p>
       {% endif %}
@@ -84,13 +96,6 @@
       </div>
       {% endif %}
       </div>
-    </div>
-
-    <div id="goal">
-    <h1 style="text-align: center;">Goals</h1>
-    {% for goal in goal_list %}
-    <div>{{ goal }}</div>
-    {% endfor %}
     </div>
 
   </aside>

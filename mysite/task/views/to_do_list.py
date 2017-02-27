@@ -16,7 +16,7 @@ __all__ = [
 @login_required()
 def to_do_list_new(request):
     request.user.todolist_set.create()
-    return redirect('task:task_calendar', date=datetime.date.today().strftime('%Y%m%d'))
+    return redirect('task:task_calendar_detail', date=datetime.date.today().strftime('%Y%m%d'))
 
 
 @login_required

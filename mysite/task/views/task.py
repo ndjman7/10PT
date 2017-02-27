@@ -23,7 +23,7 @@ __all__ = [
 
 
 @login_required()
-def to_do_list_calendar(request, date=timezone.now().strftime('%Y%m%d')):
+def to_do_list_calendar(request, date=TaskCalendar.today):
 
     today = TaskCalendar.today
     this_year = TaskCalendar.this_year
@@ -32,8 +32,6 @@ def to_do_list_calendar(request, date=timezone.now().strftime('%Y%m%d')):
     result, _year = TaskCalendar.month_list(ToDoList, request.user)
     this_month_list = TaskCalendar.pack_one_week(result)
 
-    goal_list = Goal.objects.filter(user=request.user)
-
     context = {
         'thisday': this_day,
         'DAY': TaskCalendar.DAY.values(),
@@ -41,8 +39,6 @@ def to_do_list_calendar(request, date=timezone.now().strftime('%Y%m%d')):
         'thismonth': this_month,
         'thisresult': this_month_list,
         'today': today,
-
-        'goal_list': goal_list,
     }
 
     try:
@@ -66,7 +62,8 @@ def to_do_list_calendar(request, date=timezone.now().strftime('%Y%m%d')):
     context['finish_tasks'] = finish_tasks
     context['task_percent'] = task_percent
     context['date'] = date
-    context['today'] = timezone.now().strftime('%Y%m%d')
+    context['today'] = timezone.localtime(timezone.now()).strftime('%Y%m%d')
+    print(timezone.localtime(timezone.now()))
     context['success'] = True if all_task - finish_tasks == 0 and all_task > 0 else False
     return render(request, 'task/calendar.html', context)
 
@@ -76,9 +73,10 @@ class TaskNew(View):
 
     def get(self, request, *args, **kwargs):
         today_to_do_list = ToDoList.today_list(user=request.user)
+        print(today_to_do_list)
         if not today_to_do_list.can_make_task():
             messages.error(request, 'Task already created')
-            return redirect('task:to_do_list_detail', date=TaskCalendar.today)
+            return redirect('task:task_calendar', date=TaskCalendar.today)
 
         form = TaskModelForm()
         return render(request, 'task/task_edit.html', {'form': form})

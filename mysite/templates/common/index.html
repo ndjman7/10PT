@@ -20,20 +20,20 @@
       <div class="header-content">
         <div class="header-left">
           <div class='header-logo-container'>
-              <a href="#" class="header-logo-a">
+              <a href="{% url 'task:task_main' %}" class="header-logo-a">
                 <div class='header-logo'></div>
               </a>
             </h1>
           </div>
           {% if user.is_authenticated %}
           <div class='home-container'>
-            <a href="{% url 'member:personal_page' %}">
+            <a href="{% url 'task:task_main' %}">
               <span>HOME</span>
             </a>
           </div>
           <div class='scedule-container'>
-            <a href="{% url 'task:task_calendar' %}">
-              <span>CALENDAR</span>
+            <a href="{% url 'task:task_main'%}">
+              <span>LIBRARY</span>
             </a>
           </div>
           <div class='diary-container'>

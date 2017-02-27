@@ -52,7 +52,7 @@ class ToDoList(models.Model):
 
     @classmethod
     def today_list(cls, user):
-        return cls.objects.get(user=user, date=timezone.now())
+        return cls.objects.get_or_create(user=user, date=timezone.now())[0]
 
 
 class Task(models.Model):
