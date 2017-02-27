@@ -16,7 +16,7 @@ class ToDoList(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
     date = models.DateField(auto_now_add=True)
-    progress = models.CharField(max_length=7, choices=PROGRESS_CHOICES, default='A')
+    progress = models.CharField(max_length=7, choices=PROGRESS_CHOICES, default='F')
 
     class Meta:
         unique_together = (("user", "date"),)
