@@ -1,12 +1,14 @@
+import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic.detail import DetailView
+from django.utils import timezone
 
 from task.forms import TaskModelForm, TaskEditModelForm
-from task.models import Task, ToDoList
+from task.models import Task, ToDoList, Goal
 from task.utils import TaskCalendar
 
 
@@ -21,7 +23,7 @@ __all__ = [
 
 
 @login_required()
-def to_do_list_calendar(request):
+def to_do_list_calendar(request, date=timezone.now().strftime('%Y%m%d')):
 
     today = TaskCalendar.today
     this_year = TaskCalendar.this_year
@@ -30,6 +32,8 @@ def to_do_list_calendar(request):
     result, _year = TaskCalendar.month_list(ToDoList, request.user)
     this_month_list = TaskCalendar.pack_one_week(result)
 
+    goal_list = Goal.objects.filter(user=request.user)
+
     context = {
         'thisday': this_day,
         'DAY': TaskCalendar.DAY.values(),
@@ -37,7 +41,33 @@ def to_do_list_calendar(request):
         'thismonth': this_month,
         'thisresult': this_month_list,
         'today': today,
+
+        'goal_list': goal_list,
     }
+
+    try:
+        year = int(date[:4])
+        month = int(date[4:6])
+        day = int(date[6:])
+        find_date = datetime.date(year, month, day)
+        to_do_list = request.user.todolist_set.get(date=find_date, user=request.user)
+    except ToDoList.DoesNotExist:
+        return render(request, 'task/calendar.html', context)
+    tasks = to_do_list.task_set.order_by('ranking')
+    try:
+        task_percent = round(to_do_list.task_set.filter(check=True).count()/tasks.count()*100)
+    except ZeroDivisionError:
+        task_percent = 0
+    all_task = tasks.count()
+    finish_tasks = to_do_list.task_set.filter(check=True).count()
+    context['to_do_list'] = to_do_list
+    context['tasks'] = tasks
+    context['all_task'] = all_task
+    context['finish_tasks'] = finish_tasks
+    context['task_percent'] = task_percent
+    context['date'] = date
+    context['today'] = timezone.now().strftime('%Y%m%d')
+    context['success'] = True if all_task - finish_tasks == 0 and all_task > 0 else False
     return render(request, 'task/calendar.html', context)
 
 
@@ -57,7 +87,7 @@ class TaskNew(View):
         today_to_do_list = ToDoList.today_list(user=request.user)
         if not today_to_do_list.can_make_task():
             messages.error(request, 'Task already created')
-            return redirect('task:to_do_list_detail', date=TaskCalendar.today)
+            return redirect('task:task_calendar', date=TaskCalendar.today)
 
         form = TaskModelForm(request.POST)
         if form.is_valid():
@@ -65,7 +95,7 @@ class TaskNew(View):
             task.mission = today_to_do_list
             task.ranking = task.mission.ranking
             task.save()
-            return redirect('task:to_do_list_detail', date=TaskCalendar.today)
+            return redirect('task:task_calendar', date=TaskCalendar.today)
 
 
 @login_required()
@@ -76,7 +106,7 @@ def task_edit(request, pk):
 
         if form.is_valid():
             form.save()
-            return redirect('task:to_do_list_detail', date=TaskCalendar.today)
+            return redirect('task:task_calendar', date=TaskCalendar.today)
     else:
         form = TaskEditModelForm(instance=task)
 
@@ -94,7 +124,7 @@ class TaskCheck(View):
         task.check = not task.check
         task.save()
         task.mission.set_progress()
-        return redirect('task:to_do_list_detail', date=TaskCalendar.today)
+        return redirect('task:task_calendar', date=TaskCalendar.today)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -126,6 +156,6 @@ class TaskDelete(View):
         else:
             messages.error(request, 'No access rights')
 
-        return redirect('task:to_do_list_detail', date=TaskCalendar.today)
+        return redirect('task:task_calendar', date=TaskCalendar.today)
 
 

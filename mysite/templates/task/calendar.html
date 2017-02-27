@@ -1,34 +1,98 @@
 {% extends 'common/index.html' %}
 
 {% block content %}
-<h1 style="text-align: center; height: 100px;">Calendar</h1>
-<table style="width:80%; margin: 0 auto;"  class="table table-bordered">
-  <tr>
-    <th colspan="7" style="text-align: center;">{{ YEAR }}년</th>
-  </tr>
-  <tr>
-    {% for day in DAY %}
-    <td style="text-align: center;">{{ day }}</td>
-    {% endfor %}
-  </tr>
-  {% for week in thisresult %}
-  <tr>
-    {% for date, day, last_to_do_list, progress in week %}
-    <td style="text-align: center; background-color:{{ progress }};">
-      {% if date == thisday %}
-      <span>
-        <a href="{% url 'task:to_do_list_detail' date=today %}">{{ date }}</a>
-      </span>
-      {% elif last_to_do_list %}
-      <span style="color: red;">
-        <a href="{% url 'task:to_do_list_detail' date=last_to_do_list %}">{{ date }}</a>
-      </span>
-      {% elif date %}
-      <span>{{ date }}</span>
+<div id="maincontainer">
+  <section id="section">
+    <article id="calendar">
+      <h1 style="text-align: center; height: 100px;">Calendar</h1>
+      <table style="width:80%; margin: 0 auto;"  class="table table-bordered">
+        <tr>
+          <th colspan="7" style="text-align: center;">{{ YEAR }}년</th>
+        </tr>
+        <tr>
+          {% for day in DAY %}
+          <td style="text-align: center;">{{ day }}</td>
+          {% endfor %}
+        </tr>
+        {% for week in thisresult %}
+        <tr>
+          {% for date, day, last_to_do_list, progress in week %}
+          <td style="text-align: center; background-color:{{ progress }};">
+            {% if date == thisday %}
+            <span>
+              <a href="{% url 'task:task_calendar_detail' date=today %}">{{ date }}</a>
+            </span>
+            {% elif last_to_do_list %}
+            <span style="color: red;">
+              <a href="{% url 'task:task_calendar_detail' date=last_to_do_list %}">{{ date }}</a>
+            </span>
+            {% elif date %}
+            <span>{{ date }}</span>
+            {% endif %}
+          </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+      </table>
+    </article>
+  </section>
+
+  <aside id='aside'>
+    <div id="today-goal">
+      <div style="width:80%; margin: 0 auto;">
+      <h1 style="text-align: center;">Today To Do List!</h1>
+      <span style="font-size: 20px;">{{ to_do_list }}</span>
+      {% if to_do_list is None %}
+      <div style="margin: 0 auto;">
+        <form action="{% url 'task:to_do_list_new'%}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-default btn-primary">만들기</button>
+        </form>
+      </div>
+      {% else %}
+      <div class="progress">
+        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+          aria-valuemin="0" aria-valuemax="100" style="width:{{ task_percent }}%">
+          {{ task_percent }}% Complete
+        </div>
+      </div>
+      {% if success %}
+      <p style="font-size: 50px; text-align: center;"> 수고하셨습니다!</p>
       {% endif %}
-    </td>
+      {% if date == today %}
+      <a href="{% url 'task:task_new' %}" class="btn btn-default btn-primary">추가하기</a>
+      {% endif %}
+
+      <p>진행상황: {{ finish_tasks }}/{{ all_task }}</p>
+
+      <div>
+        {% for task in tasks %}
+        <p style="font-size: 15px;">{{ task.ranking }} : {{ task.title }}</p>
+        {% if date == today %}
+        <form action="{% url 'task:task_check' %}" method="POST" style="display: inline-block;">
+          {% csrf_token %}
+          <input type="hidden" name="task_pk" value="{{ task.pk }}">
+          {% if task.check %}
+          <button type="submit" class="btn btn-default btn-primary">취소</button>
+          {% else %}
+          <button type="submit" class="btn btn-default btn-primary">완료</button>
+          {% endif %}
+        </form>
+        {% endif %}
+        <a href="{% url 'task:task_detail' pk=task.pk %}" class = "btn btn-default btn-primary">상세보기</a>
+        {% endfor %}
+      </div>
+      {% endif %}
+      </div>
+    </div>
+
+    <div id="goal">
+    <h1 style="text-align: center;">Goals</h1>
+    {% for goal in goal_list %}
+    <div>{{ goal }}</div>
     {% endfor %}
-  </tr>
-  {% endfor %}
-</table>
+    </div>
+
+  </aside>
+</div>
 {% endblock %}
