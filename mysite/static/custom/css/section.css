@@ -10,10 +10,15 @@
   float: left;
 }
 
+#diary {
+  margin-top: 80px;
+  height: 400px;
+}
+
 #aside {
   width: 400px;
-  border: solid 1px black;
+  border: solid 1px #009245;
   box-sizing: border-box;
   float: right;
-  height: 600px;
+  height: 800px;
 }
