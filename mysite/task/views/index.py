@@ -14,6 +14,6 @@ def index(request):
     if user.id is not None:
         return redirect('member:personal_page')
     else:
-        return render(request, 'member/signin.html', {'form': SignInModelForm()})
+        return redirect('member:signin')
 
 
