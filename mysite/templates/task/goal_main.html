@@ -1,0 +1,11 @@
+{% extends 'common/index.html' %}
+
+{% block content %}
+<div style="width: 800px; margin:0 auto;">
+    {% for goal in goal_list %}
+    <div>
+        <p>{{ goal }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
