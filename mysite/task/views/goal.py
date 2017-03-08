@@ -17,4 +17,6 @@ class GoalList(ListView):
 
 def goal_main(request):
     context = {}
+    goal_list = request.user.goal_set.all()
+    context['goal_list'] = goal_list
     return render(request, 'task/goal_main.html', context)
