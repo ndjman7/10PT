@@ -29,10 +29,10 @@ YEAR = {
 }
 
 
-def date_to_str():
-    pass
+def today_to_str():
+    return timezone.localtime(timezone.now()).strftime('%Y%m%d')
 
-today = timezone.localtime(timezone.now()).strftime('%Y%m%d')
+today = today_to_str()
 this_year = int(today[:4])
 this_month = int(today[4:6])
 this_day = int(today[6:])
