@@ -16,7 +16,7 @@ __all__ = [
 @login_required()
 def to_do_list_new(request):
     request.user.todolist_set.create()
-    return redirect('task:task_calendar', date=datetime.date.today().strftime('%Y%m%d'))
+    return redirect('task:task_calendar', date=TaskCalendar.today_to_str())
 
 
 @login_required
@@ -43,6 +43,6 @@ def to_do_list_detail(request, date):
     context['finish_tasks'] = finish_tasks
     context['task_percent'] = task_percent
     context['date'] = date
-    context['today'] = timezone.now().strftime('%Y%m%d')
+    context['today'] = TaskCalendar.today_to_str()
     context['success'] = True if all_task - finish_tasks == 0 and all_task > 0 else False
     return render(request, 'task/to_do_list_detail.html', context)

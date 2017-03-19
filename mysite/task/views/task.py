@@ -62,8 +62,7 @@ def to_do_list_calendar(request, date=TaskCalendar.today):
     context['finish_tasks'] = finish_tasks
     context['task_percent'] = task_percent
     context['date'] = date
-    context['today'] = timezone.localtime(timezone.now()).strftime('%Y%m%d')
-    print(timezone.localtime(timezone.now()))
+    context['today'] = TaskCalendar.today_to_str()
     context['success'] = True if all_task - finish_tasks == 0 and all_task > 0 else False
     return render(request, 'task/calendar.html', context)
 
